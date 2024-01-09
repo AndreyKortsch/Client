@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:xs="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" Title="Изображение"
+             x:Class="Network.ImageViewPage">
+       <Grid>
+        <Image  HorizontalOptions="FillAndExpand" 
+                MinimumWidthRequest="200"
+                MinimumHeightRequest="500"
+                VerticalOptions="FillAndExpand"
+                x:Name="image" 
+                Aspect="AspectFit" />
+         <Button Text="Отправить на сервер" VerticalOptions="End" HorizontalOptions="Center" Clicked="Button_Clicked" />
+       </Grid>
+</ContentPage>
