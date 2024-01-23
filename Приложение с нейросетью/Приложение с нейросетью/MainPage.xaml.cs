@@ -6,6 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Drawing;
+using Newtonsoft.Json;
+using Xamarin.CommunityToolkit.Behaviors;
 
 namespace Приложение_с_нейросетью
 {
@@ -46,18 +51,49 @@ namespace Приложение_с_нейросетью
                 }
             };
         }
-        private async void OnLoginButtonClicked(object sender, EventArgs e)
-        {
-            string username = usernameEntry.Text;
-            string password = passwordEntry.Text;
+        public async void SendReguest(string username, string password) {
+            // Получаем переданное фото
+            //Bitmap photo = (Bitmap)Intent.GetParcelableExtra("photo");
 
-            // Здесь вы можете выполнить проверку логина и пароля с вашим сервером или базой данных
-            // Здесь пример простой проверки, использующий захардкоженные данные
+            // Преобразуем фото в массив байтов
+            //ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            //photo.Compress(Bitmap.CompressFormat.Jpeg, 100, stream);
+            //byte[] byteArray = stream.ToByteArray();
 
-            if (username == "admin" && password == "admin")
+            // Создаем экземпляр HttpClient
+            HttpClient client = new HttpClient();
+
+            // Создаем экземпляр MultipartFormDataContent для отправки файла на сервер
+            //MultipartFormDataContent content = new MultipartFormDataContent();
+            //ByteArrayContent imageContent = new ByteArrayContent(byteArray);
+            //.Content
+            //    Content
+            // Устанавливаем Content-Disposition заголовок для указания имени файла
+            //imageContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+            //{
+            //    Name = "photo",
+            //    FileName = "photo.jpg"
+            //};
+
+            // Добавляем фото в контент
+            //content.Add(imageContent);
+            //var content = new StringContent(JsonConvert.SerializeObject(new { username = username, password = password }));
+
+            // Отправляем POST-запрос на сервер
+            var values = new Dictionary<string, string>
+             {
+                { "username", username },
+                { "password", password }
+            };
+
+            var content = new FormUrlEncodedContent(values);
+            HttpResponseMessage response = await client.PostAsync("http://192.168.0.103:8080/api/auth/signin", content);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
             {
-                // Авторизация прошла успешно, выполните необходимые действия
-                await DisplayAlert("Success", "Login successful", "OK");
+                // Получаем ответ от сервера
+                //string responseContent = await response.Content.ReadAsStringAsync();
+                await DisplayAlert("Авторизация", "Авторизация прошла успешно", "Принять");
                 var nextPage = new CameraViewPage();
 
                 // Используйте Navigation.PushAsync() для перехода на новую страницу
@@ -65,9 +101,34 @@ namespace Приложение_с_нейросетью
             }
             else
             {
-                // Неправильный логин или пароль, отобразите сообщение об ошибке
-                await DisplayAlert("Error", "Invalid username or password", "OK");
+                await DisplayAlert("Ошибка авторизации", "Неверный логин или пароль" , "Принять");
+
             }
+        }
+        private async void OnLoginButtonClicked(object sender, EventArgs e)
+        {
+            string username = usernameEntry.Text;
+            string password = passwordEntry.Text;
+            loginButton.IsEnabled = false;
+            SendReguest(username, password);
+           loginButton.IsEnabled = true;
+            // Здесь вы можете выполнить проверку логина и пароля с вашим сервером или базой данных
+            // Здесь пример простой проверки, использующий захардкоженные данные
+
+            //if (username == "admin" && password == "admin")
+            //{
+            // Авторизация прошла успешно, выполните необходимые действия
+            //  await DisplayAlert("Авторизация", "Авторизация прошла успешно", "Принять");
+            //  var nextPage = new CameraViewPage();
+
+            // Используйте Navigation.PushAsync() для перехода на новую страницу
+            // await Navigation.PushAsync(nextPage);
+            //}
+            //else
+            //{
+            // Неправильный логин или пароль, отобразите сообщение об ошибке
+            //  await DisplayAlert("Ошибка авторизации", "Неверный логин или пароль", "Принять");
+            //}
         }
 
     }
