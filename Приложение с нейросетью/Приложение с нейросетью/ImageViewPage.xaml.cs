@@ -10,6 +10,8 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using System.Drawing;
 using Xamarin.Forms.Xaml;
+using System.Net.Http;
+using Newtonsoft.Json;
 using Microsoft.Win32;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
@@ -30,6 +32,7 @@ using Tensorflow.Contexts;
 using Network.Models;
 using Microsoft.ML.Transforms;
 using Tensorflow.Keras.Engine;
+using System.Collections;
 
 
 namespace Network
@@ -51,6 +54,7 @@ namespace Network
                 image.MinimumWidthRequest = 800;
                 inStream.Flush();
             }
+
           
         }
         public byte[] Getimagebytes()
@@ -69,18 +73,57 @@ namespace Network
             }
             //DisplayAlert("Success", System.Text.Encoding.Default.GetString(byteData), "OK");
             return byteData;
-        } 
+        }
+        public async void SendReguest(string username, string password)
+        {
+            // Создаем экземпляр HttpClient
+            HttpClient client = new HttpClient();
+            // Отправляем POST-запрос на сервер
+            var values = new Dictionary<string, string>
+             {
+                { "accessToken", username },
+                { "image", password }
+            };
+            var content = new FormUrlEncodedContent(values);
+            HttpResponseMessage response = await client.PostAsync("http://192.168.0.104:8080/api/auth/image", content);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                var Items = JsonConvert.DeserializeObject<Network.Models.ImageData>(responseContent);
+                Console.WriteLine("");
+                await DisplayAlert("Изображение", Items.Image.Class, "Принять");
+                var nextPage = new CameraViewPage();
+                
+                // Используйте Navigation.PushAsync() для перехода на новую страницу
+                await Navigation.PushAsync(nextPage);
+                //await DisplayAlert("Авторизация", Items.accessToken, "Принять");
+                //await DisplayAlert("Авторизация", "Авторизация прошла успешно", "Принять");
+                // var nextPage = new CameraViewPage();
+                //Preferences.Clear();
+                //Preferences.Set("token", Items.accessToken);
+                // Используйте Navigation.PushAsync() для перехода на новую страницу
+                //await Navigation.PushAsync(nextPage);
+            }
+            else
+            {
+                await DisplayAlert("Ошибка авторизации", "Неверный логин или пароль", "Принять");
 
+            }
+        }
         private async void Button_Clicked(object sender, EventArgs e)
         {
            //LoadTensorFlowModel();
-           await DisplayAlert("Success", LoadModel(), "OK");
-           //LoadTensorFlowModel();
+           //await DisplayAlert("Success", LoadModel(), "OK");
+            //LoadTensorFlowModel();
+            string image = Convert.ToBase64String(Getimagebytes());
+            String token = Preferences.Get("token", "");
+            SendReguest(token, image);
+            //await DisplayAlert("Success", LoadModel(), "OK");
 
 
         }
-        
-            public String LoadModel()
+
+        public String LoadModel()
         {
             //string modelFile = "path_to_your_model.pb";
             //graph = new TFGraph();
@@ -99,7 +142,9 @@ namespace Network
             //ITransformer transformer = estimator.Fit(dataView);
 
             //var predictionEngine = mlContext.Model.CreatePredictionEngine<InputData, OutputData>(transformer);
-            Getimagebytes();
+            //Getimagebytes();
+            string base64String = Convert.ToBase64String(Getimagebytes());
+            String x = Preferences.Get("token", "");
             // Передача входных данных для предсказания
             //var prediction = predictionEngine.Predict(new InputData() { Image = Getimagebytes() });
 

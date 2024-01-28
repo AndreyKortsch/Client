@@ -11,6 +11,8 @@ using System.Net.Http.Headers;
 using System.Drawing;
 using Newtonsoft.Json;
 using Xamarin.CommunityToolkit.Behaviors;
+using Xamarin.Essentials;
+using Network.Models;
 
 namespace Приложение_с_нейросетью
 {
@@ -85,17 +87,20 @@ namespace Приложение_с_нейросетью
                 { "username", username },
                 { "password", password }
             };
-
             var content = new FormUrlEncodedContent(values);
-            HttpResponseMessage response = await client.PostAsync("http://192.168.0.103:8080/api/auth/signin", content);
+            HttpResponseMessage response = await client.PostAsync("http://192.168.0.104:8080/api/auth/signin", content);
             string responseContent = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
                 // Получаем ответ от сервера
                 //string responseContent = await response.Content.ReadAsStringAsync();
-                await DisplayAlert("Авторизация", "Авторизация прошла успешно", "Принять");
+                var Items = JsonConvert.DeserializeObject<User>(responseContent);
+                Console.WriteLine("");
+                await DisplayAlert("Авторизация", Items.accessToken, "Принять");
+                //await DisplayAlert("Авторизация", "Авторизация прошла успешно", "Принять");
                 var nextPage = new CameraViewPage();
-
+                Preferences.Clear();
+                Preferences.Set("token", Items.accessToken);
                 // Используйте Navigation.PushAsync() для перехода на новую страницу
                 await Navigation.PushAsync(nextPage);
             }
