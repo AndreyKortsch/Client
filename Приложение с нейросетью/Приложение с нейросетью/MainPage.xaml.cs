@@ -96,7 +96,7 @@ namespace Приложение_с_нейросетью
                 //string responseContent = await response.Content.ReadAsStringAsync();
                 var Items = JsonConvert.DeserializeObject<User>(responseContent);
                 Console.WriteLine("");
-                await DisplayAlert("Авторизация", Items.accessToken, "Принять");
+                await DisplayAlert("Авторизация", "Авторизация прошла успешно", "Принять");
                 //await DisplayAlert("Авторизация", "Авторизация прошла успешно", "Принять");
                 var nextPage = new CameraViewPage();
                 Preferences.Clear();

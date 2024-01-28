@@ -96,6 +96,8 @@ namespace Network
                 
                 // Используйте Navigation.PushAsync() для перехода на новую страницу
                 await Navigation.PushAsync(nextPage);
+                this.Navigation.RemovePage(this.Navigation.NavigationStack[this.Navigation.NavigationStack.Count-2]);
+
                 //await DisplayAlert("Авторизация", Items.accessToken, "Принять");
                 //await DisplayAlert("Авторизация", "Авторизация прошла успешно", "Принять");
                 // var nextPage = new CameraViewPage();

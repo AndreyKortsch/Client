@@ -81,7 +81,7 @@ namespace LearningXamarin.Views
             //file.GetStream
             if (file == null)
             {
-                await DisplayAlert("Success", "Login successful", "OK");
+                //await DisplayAlert("Success", "Login successful", "OK");
                 return;
             }
           
@@ -89,16 +89,16 @@ namespace LearningXamarin.Views
         private void RecordVideo(object sender, EventArgs e)
         {
             //xctCameraView.Shutter();
-            btnstopVideo.IsEnabled = true;
-            btnrecordVideo.IsEnabled = false;
+          //  btnstopVideo.IsEnabled = true;
+          //  btnrecordVideo.IsEnabled = false;
 
 
         }
         private void StopVideo(object sender, EventArgs e)
         {
             xctCameraView.Shutter();
-            btnrecordVideo.IsEnabled = true;
-            btnstopVideo.IsEnabled = false;
+          //  btnrecordVideo.IsEnabled = true;
+          //  btnstopVideo.IsEnabled = false;
 
         }
 
@@ -110,8 +110,8 @@ namespace LearningXamarin.Views
                 xctCameraView.CaptureMode = CameraCaptureMode.Video;
 
                 captureBtn.IsEnabled = false;
-                btnrecordVideo.IsEnabled = true;
-                btnstopVideo.IsEnabled = false;
+            //    btnrecordVideo.IsEnabled = true;
+             //   btnstopVideo.IsEnabled = false;
             }
             else
             {
@@ -119,8 +119,8 @@ namespace LearningXamarin.Views
                 xctCameraView.CaptureMode = CameraCaptureMode.Photo;
 
                 captureBtn.IsEnabled = true;
-                btnrecordVideo.IsEnabled = false;
-                btnstopVideo.IsEnabled = false;
+             //   btnrecordVideo.IsEnabled = false;
+             //   btnstopVideo.IsEnabled = false;
             }
         }
 
