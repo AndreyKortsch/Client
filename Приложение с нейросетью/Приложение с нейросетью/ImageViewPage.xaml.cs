@@ -85,7 +85,7 @@ namespace Network
                 { "image", password }
             };
             var content = new FormUrlEncodedContent(values);
-            HttpResponseMessage response = await client.PostAsync("http://192.168.0.104:8080/api/auth/image", content);
+            HttpResponseMessage response = await client.PostAsync("https://four-fans-say.loca.lt/api/auth/image", content);
             string responseContent = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
