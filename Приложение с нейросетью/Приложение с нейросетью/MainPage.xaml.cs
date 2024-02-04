@@ -88,7 +88,7 @@ namespace Приложение_с_нейросетью
                 { "password", password }
             };
             var content = new FormUrlEncodedContent(values);
-            HttpResponseMessage response = await client.PostAsync("https://four-fans-say.loca.lt/api/auth/signin", content);
+            HttpResponseMessage response = await client.PostAsync("https://lucky-rings-laugh.loca.lt/api/auth/signin", content);
             string responseContent = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {

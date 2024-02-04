@@ -85,7 +85,7 @@ namespace Network
                 { "image", password }
             };
             var content = new FormUrlEncodedContent(values);
-            HttpResponseMessage response = await client.PostAsync("https://four-fans-say.loca.lt/api/auth/image", content);
+            HttpResponseMessage response = await client.PostAsync("https://lucky-rings-laugh.loca.lt/api/auth/image", content);
             string responseContent = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
@@ -108,7 +108,7 @@ namespace Network
             }
             else
             {
-                await DisplayAlert("Ошибка авторизации", "Неверный логин или пароль", "Принять");
+                await DisplayAlert("Ошибка", "Ошибка обработки запроса", "Принять");
 
             }
         }
