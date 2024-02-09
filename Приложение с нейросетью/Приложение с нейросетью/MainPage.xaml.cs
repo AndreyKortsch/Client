@@ -82,32 +82,38 @@ namespace Приложение_с_нейросетью
             //var content = new StringContent(JsonConvert.SerializeObject(new { username = username, password = password }));
 
             // Отправляем POST-запрос на сервер
-            var values = new Dictionary<string, string>
+            try
+            {
+                var values = new Dictionary<string, string>
              {
                 { "username", username },
                 { "password", password }
             };
-            var content = new FormUrlEncodedContent(values);
-            HttpResponseMessage response = await client.PostAsync("https://lucky-rings-laugh.loca.lt/api/auth/signin", content);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            if (response.IsSuccessStatusCode)
-            {
-                // Получаем ответ от сервера
-                //string responseContent = await response.Content.ReadAsStringAsync();
-                var Items = JsonConvert.DeserializeObject<User>(responseContent);
-                Console.WriteLine("");
-                await DisplayAlert("Авторизация", "Авторизация прошла успешно", "Принять");
-                //await DisplayAlert("Авторизация", "Авторизация прошла успешно", "Принять");
-                var nextPage = new CameraViewPage();
-                Preferences.Clear();
-                Preferences.Set("token", Items.accessToken);
-                // Используйте Navigation.PushAsync() для перехода на новую страницу
-                await Navigation.PushAsync(nextPage);
-            }
-            else
-            {
-                await DisplayAlert("Ошибка авторизации", "Неверный логин или пароль" , "Принять");
+                var content = new FormUrlEncodedContent(values);
+                HttpResponseMessage response = await client.PostAsync("https://shy-grapes-stand.loca.lt/api/auth/signin", content);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    // Получаем ответ от сервера
+                    //string responseContent = await response.Content.ReadAsStringAsync();
+                    var Items = JsonConvert.DeserializeObject<User>(responseContent);
+                    Console.WriteLine("");
+                    await DisplayAlert("Авторизация", "Авторизация прошла успешно", "Принять");
+                    //await DisplayAlert("Авторизация", "Авторизация прошла успешно", "Принять");
+                    var nextPage = new CameraViewPage();
+                    Preferences.Clear();
+                    Preferences.Set("token", Items.accessToken);
+                    // Используйте Navigation.PushAsync() для перехода на новую страницу
+                    await Navigation.PushAsync(nextPage);
+                }
+                else
+                {
+                    await DisplayAlert("Ошибка авторизации", "Неверный логин или пароль", "Принять");
 
+                }
+            } catch(Exception ex)
+            {
+                await DisplayAlert("Ошибка подключения",ex.Message, "Принять");
             }
         }
         private async void OnLoginButtonClicked(object sender, EventArgs e)

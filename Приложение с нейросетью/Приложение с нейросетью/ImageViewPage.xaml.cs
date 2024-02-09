@@ -85,7 +85,7 @@ namespace Network
                 { "image", password }
             };
             var content = new FormUrlEncodedContent(values);
-            HttpResponseMessage response = await client.PostAsync("https://lucky-rings-laugh.loca.lt/api/auth/image", content);
+            HttpResponseMessage response = await client.PostAsync("https://shy-grapes-stand.loca.lt/api/auth/image", content);
             string responseContent = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
