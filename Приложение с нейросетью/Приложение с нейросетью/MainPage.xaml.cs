@@ -90,7 +90,7 @@ namespace Приложение_с_нейросетью
                 { "password", password }
             };
                 var content = new FormUrlEncodedContent(values);
-                HttpResponseMessage response = await client.PostAsync("https://shy-grapes-stand.loca.lt/api/auth/signin", content);
+                HttpResponseMessage response = await client.PostAsync("https://every-teams-wink.loca.lt/api/auth/signin", content);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
