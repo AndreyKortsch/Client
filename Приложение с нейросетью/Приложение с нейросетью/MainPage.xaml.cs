@@ -53,7 +53,7 @@ namespace Приложение_с_нейросетью
                 }
             };
         }
-        public async void SendReguest(string username, string password) {
+        public async Task SendReguest(string username, string password) {
             // Получаем переданное фото
             //Bitmap photo = (Bitmap)Intent.GetParcelableExtra("photo");
 
@@ -121,7 +121,7 @@ namespace Приложение_с_нейросетью
             string username = usernameEntry.Text;
             string password = passwordEntry.Text;
             loginButton.IsEnabled = false;
-            SendReguest(username, password);
+            await SendReguest(username, password);
            loginButton.IsEnabled = true;
             // Здесь вы можете выполнить проверку логина и пароля с вашим сервером или базой данных
             // Здесь пример простой проверки, использующий захардкоженные данные

@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tensorflow;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using System.Drawing;
@@ -22,16 +21,10 @@ using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.Shapes;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SkiaSharp;
-using Microsoft.ML;
-using Microsoft.ML.Data;
 using Network;
 using System.Reflection;
 using static Xamarin.Essentials.Permissions;
-using Tensorflow.Framework.Models;
-using Tensorflow.Contexts;
 using Network.Models;
-using Microsoft.ML.Transforms;
-using Tensorflow.Keras.Engine;
 using System.Collections;
 
 
@@ -74,7 +67,7 @@ namespace Network
             //DisplayAlert("Success", System.Text.Encoding.Default.GetString(byteData), "OK");
             return byteData;
         }
-        public async void SendReguest(string username, string password)
+        public async Task SendReguest(string username, string password)
         {
             // Создаем экземпляр HttpClient
             HttpClient client = new HttpClient();
@@ -96,7 +89,7 @@ namespace Network
                 
                 // Используйте Navigation.PushAsync() для перехода на новую страницу
                 await Navigation.PushAsync(nextPage);
-                this.Navigation.RemovePage(this.Navigation.NavigationStack[this.Navigation.NavigationStack.Count-2]);
+                Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count-2]);
 
                 //await DisplayAlert("Авторизация", Items.accessToken, "Принять");
                 //await DisplayAlert("Авторизация", "Авторизация прошла успешно", "Принять");
@@ -119,42 +112,13 @@ namespace Network
             //LoadTensorFlowModel();
             string image = Convert.ToBase64String(Getimagebytes());
             String token = Preferences.Get("token", "");
-            SendReguest(token, image);
+            await SendReguest(token, image);
             //await DisplayAlert("Success", LoadModel(), "OK");
 
 
         }
 
-        public String LoadModel()
-        {
-            //string modelFile = "path_to_your_model.pb";
-            //graph = new TFGraph();
-            //session = new TFSession(graph);
-            //graph.Import(File.ReadAllBytes(modelFile));
-            // Создание среды ML.NET
-            MLContext mlContext = new MLContext();
-            var Path = "/storage/emulated/0/Pictures/model";
-            // Создание экземпляра предварительно обученной модели
-            //ITransformer trainedModel = mlContext.Model.Load("/storage/emulated/0/Pictures/saved_model.pb", out var modelSchema);
-            var trainedModel = mlContext.Model.LoadTensorFlowModel(Path)            ;
-            //var trainedModel2 = mlContext.Transforms.Model.LoadTensorFlowModel(Path);
-
-            //IEstimator<ITransformer> estimator = trainedModel.ScoreTensorFlowModel("Const", "serving_default_inputs");
-            //IDataView dataView = mlContext.Data.LoadFromEnumerable(new List<InputData>());
-            //ITransformer transformer = estimator.Fit(dataView);
-
-            //var predictionEngine = mlContext.Model.CreatePredictionEngine<InputData, OutputData>(transformer);
-            //Getimagebytes();
-            string base64String = Convert.ToBase64String(Getimagebytes());
-            String x = Preferences.Get("token", "");
-            // Передача входных данных для предсказания
-            //var prediction = predictionEngine.Predict(new InputData() { Image = Getimagebytes() });
-
-            // Использование предсказанной метки
-            //Console.WriteLine($"Predicted label: {prediction.Scores}");
-            return sd2;
-            //return prediction.Scores;
-        }
+       
         public async void LoadTensorFlowModel()
         {
             

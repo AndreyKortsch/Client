@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Товар"
+             x:Class="Network.AddGoods">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Класс" IsVisible="true"/>
+            <Label Text="Кросс" IsVisible="true"/>
+            <Label Text="Производитель"/>
+            <Picker Title="Выберите производителя" ItemsSource="{Binding Manufacturer}" ItemDisplayBinding="{Binding name}" SelectedItem="{Binding SelectedCountry,Mode=TwoWay}" />
+            <Label Text="Продуктовая линейка" IsVisible="{Binding IsSecondListVisible}"/>
+            <Picker x:Name="pr" Title="Выберите продуктовую линейку" IsVisible="{Binding IsSecondListVisible}" SelectedItem="{Binding SelectedCity}" />
+            <Label Text="Модель" IsVisible="{Binding IsSecondListVisible}"/>
+            <Picker Title="Выберите модель" ItemsSource="{Binding Cities}" SelectedItem="{Binding SelectedCity}" IsVisible="{Binding IsSecondListVisible}"/>
+            <Label Text="Цена" IsVisible="{Binding IsSecondListVisible}"/>
+            <Label Text="200" IsVisible="{Binding IsSecondListVisible}"/>
+            <Label Text="Количество" IsVisible="{Binding IsSecondListVisible}"/>
+            <Label Text="200" IsVisible="{Binding IsSecondListVisible}"/>
+            <Label Text="Добавить количество" IsVisible="{Binding IsSecondListVisible}"/>
+            <Entry x:Name="newItemEntry" Placeholder="Введите количество" IsVisible="{Binding IsSecondListVisible}"/>
+            <Button Text="Отправить на сервер" VerticalOptions="End" HorizontalOptions="Fill" IsVisible="{Binding IsSecondListVisible}" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
