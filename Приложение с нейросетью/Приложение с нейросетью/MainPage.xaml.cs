@@ -54,33 +54,8 @@ namespace Приложение_с_нейросетью
             };
         }
         public async Task SendReguest(string username, string password) {
-            // Получаем переданное фото
-            //Bitmap photo = (Bitmap)Intent.GetParcelableExtra("photo");
-
-            // Преобразуем фото в массив байтов
-            //ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            //photo.Compress(Bitmap.CompressFormat.Jpeg, 100, stream);
-            //byte[] byteArray = stream.ToByteArray();
-
             // Создаем экземпляр HttpClient
             HttpClient client = new HttpClient();
-
-            // Создаем экземпляр MultipartFormDataContent для отправки файла на сервер
-            //MultipartFormDataContent content = new MultipartFormDataContent();
-            //ByteArrayContent imageContent = new ByteArrayContent(byteArray);
-            //.Content
-            //    Content
-            // Устанавливаем Content-Disposition заголовок для указания имени файла
-            //imageContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
-            //{
-            //    Name = "photo",
-            //    FileName = "photo.jpg"
-            //};
-
-            // Добавляем фото в контент
-            //content.Add(imageContent);
-            //var content = new StringContent(JsonConvert.SerializeObject(new { username = username, password = password }));
-
             // Отправляем POST-запрос на сервер
             try
             {

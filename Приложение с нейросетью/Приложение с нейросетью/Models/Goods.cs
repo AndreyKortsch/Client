@@ -9,7 +9,7 @@ namespace Network.Models
         public int id { get; set; }
         public List<Manufacturer> manufacturer { get; set; }
         public List<Subbrand> subbrand { get; set; }
-        public string[] model { get; set; }
+        public List<Model> model { get; set; }
         public string Class { get; set; }
         public float Price { get; set; }
         public int Count { get; set; }

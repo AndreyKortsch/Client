@@ -30,6 +30,13 @@ namespace Network
             // Your code here
             //pr.isvisible
         }
+        protected override void OnAppearing()
+        {
+            //base.OnAppearing();
+            ((GoodsViewModel)BindingContext).LoadDataCommand.Execute(null);
+            base.OnAppearing();
+
+        }
     }
   
 }
