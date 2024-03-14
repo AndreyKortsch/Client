@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,7 +38,7 @@ namespace Network.ViewModel
                 { "classname", classname }
             };
                 var content = new FormUrlEncodedContent(values);
-                HttpResponseMessage response = await client.PostAsync("https://fine-spies-feel.loca.lt/api/test/class", content);
+                HttpResponseMessage response = await client.PostAsync("https://true-rules-like.loca.lt/api/test/class", content);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -50,16 +51,11 @@ namespace Network.ViewModel
                 else
                 {
                     Manufacturer.Add(new Manufacturer("none"));
-
-                    //await DisplayAlert("Ошибка запроса", "Неверный логин или пароль", "Принять");
-
                 }
             }
             catch (Exception ex)
             {
                 Manufacturer.Add(new Manufacturer(ex.Message));
-
-                //await DisplayAlert("Ошибка подключения", ex.Message, "Принять");
             }
             finally
             { 
@@ -79,7 +75,7 @@ namespace Network.ViewModel
                 { "manufactorid", manufactorid }
             };
                 var content = new FormUrlEncodedContent(values);
-                HttpResponseMessage response = await client.PostAsync("https://fine-spies-feel.loca.lt/api/test/manufactor", content);
+                HttpResponseMessage response = await client.PostAsync("https://true-rules-like.loca.lt/api/test/manufactor", content);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -92,16 +88,11 @@ namespace Network.ViewModel
                 else
                 {
                     Subbrand.Add(new Subbrand("none"));
-
-                    //await DisplayAlert("Ошибка запроса", "Неверный логин или пароль", "Принять");
-
                 }
             }
             catch (Exception ex)
             {
                 Manufacturer.Add(new Manufacturer(ex.Message));
-
-                //await DisplayAlert("Ошибка подключения", ex.Message, "Принять");
             }
             finally
             {
@@ -121,7 +112,7 @@ namespace Network.ViewModel
                 { "subbrandid", subbrandid }
             };
                 var content = new FormUrlEncodedContent(values);
-                HttpResponseMessage response = await client.PostAsync("https://fine-spies-feel.loca.lt/api/test/subbrand", content);
+                HttpResponseMessage response = await client.PostAsync("https://true-rules-like.loca.lt/api/test/subbrand", content);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -134,23 +125,62 @@ namespace Network.ViewModel
                 else
                 {
                     Model.Add(new Model("none"));
-
-                    //await DisplayAlert("Ошибка запроса", "Неверный логин или пароль", "Принять");
-
                 }
             }
             catch (Exception ex)
             {
                 Manufacturer.Add(new Manufacturer(ex.Message));
-
-                //await DisplayAlert("Ошибка подключения", ex.Message, "Принять");
             }
             finally
             {
                 client.Dispose();
             }
         }
-        private Goods _labelValue=new Goods();
+        public async Task SendReguest4(string token, string subbrandid, string count)
+        {
+            // Создаем экземпляр HttpClient
+            HttpClient client = new HttpClient();
+            // Отправляем POST-запрос на сервер
+            try
+            {
+                var values = new Dictionary<string, string>
+             {
+                { "accessToken", token },
+                { "modelid", subbrandid },
+                { "count", count }
+
+            };
+                var content = new FormUrlEncodedContent(values);
+                HttpResponseMessage response = await client.PostAsync("https://true-rules-like.loca.lt/api/test/updatemodel", content);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    var Items = JsonConvert.DeserializeObject<ListModel>(responseContent);
+                    //InputText = Items.models.ElementAt(0).count.ToString();
+                    //foreach (Model model in Items.models.ElementAt(0))
+                    //{
+                     //   InputText = model.count;
+                    //    Model.Add(new Model(model.id, model.name, model.count, model.price));
+                   // }
+                    //InputText = Items.models[0].count.ToString();
+
+
+                }
+                else
+                {
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+                InputText = ex.Message;
+            }
+            finally
+            {
+                client.Dispose();
+            }
+        }
+        private Goods _labelValue;//=new Goods();
         public Goods LabelValue
         {
             get { return _labelValue; }
@@ -163,27 +193,56 @@ namespace Network.ViewModel
                 }
             }
         }
-        public GoodsViewModel()
+        private string _labelValue2;
+        public string LabelValue2
         {
+            get { return _labelValue2; }
+            set
+            {
+                if (_labelValue2 != value)
+                {
+                    _labelValue2 = value;
+                    OnPropertyChanged(nameof(LabelValue2));
+                }
+            }
+        }
+        private string _inputText;
+        public string InputText
+        {
+            get { return _inputText; }
+            set
+            {
+                _inputText = value;
+                OnPropertyChanged(nameof(InputText));
+            }
+        }
+        Page page;
+        public Command SubmitCommand { get; set; }
+        public GoodsViewModel(Page page)
+        {
+            this.page = page;
             //Manufacturer = new ObservableCollection<Manufacturer>();
             String token = Preferences.Get("token", "");
             String classname = Preferences.Get("classname", "");
             classname = "ABIS_BOOK";
+            _labelValue = new Goods();
             LabelValue.Class = classname;
-           //LabelValue.Count = 67;
-
+            LabelValue.Count= 12;
             token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzEwMTY1NTA1LCJleHAiOjE3MTAyNTE5MDV9.boHtTEEUYzk7fZI4o6l5x37bIVFW3hfPYdjPGzbKZ3g";
             LoadDataCommand = new Command(async () => await SendReguest(token, classname));
+            SubmitCommand = new Command(OnSubmit);
+            //DisplayAlert("Ошибка авторизации", "Неверный логин или пароль", "Принять");
             //await SendReguest(token, classname);
-            //List<Manufacturer> Manufacturer1 = new List<Manufacturer>();
-            //Manufacturer.Add(new Manufacturer("Samsung"));
-            //Manufacturer.Add(new Manufacturer("LG"));
-            //Manufacturer.Add(new Manufacturer("Apple"));
-            //Manufacturer.Add(new Manufacturer("Apple"));
             //Subbrand = new ObservableCollection<Subbrand>();
             //Model= new ObservableCollection<Model>();
-            //Manufacturer = Manufacturer1;
-
+        }
+        private async void OnSubmit()
+        {
+            String token = Preferences.Get("token", "");
+            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzEwMTY1NTA1LCJleHAiOjE3MTAyNTE5MDV9.boHtTEEUYzk7fZI4o6l5x37bIVFW3hfPYdjPGzbKZ3g";
+            await SendReguest4(token, SelectedModel.id.ToString(), InputText);
+            await page.DisplayAlert("Сообщение", "Количество товара успешно изменено", "Принять");
+            // Обработка введенного текста
         }
         private Manufacturer _selectedCountry;
         public Manufacturer SelectedCountry
@@ -199,10 +258,9 @@ namespace Network.ViewModel
                         IsSecondListVisible = true;
                         OnPropertyChanged(nameof(SelectedCountry));
                         LoadCitiesForCountry(_selectedCountry.id);
-                        //_selectedCountry = null;
                         // Метод для загрузки городов для выбранной страны
+                     }
                 }
-            }
             }
           private Subbrand _selectedCity;
           public Subbrand SelectedCity
@@ -212,17 +270,13 @@ namespace Network.ViewModel
                 {
                     _selectedCity = value;
                     IsSecond2ListVisible = true;
-                    //IsSecond3ListVisible = true;
                     OnPropertyChanged(nameof(SelectedCity));
-                if (_selectedCity != null) LoadForCountry(_selectedCity.id);
+                if (_selectedCity != null) 
+                    LoadForCountry(_selectedCity.id);
                 else
                 {
                     IsSecond3ListVisible = false;
                 }
-                // _selectedCity = null;
-
-
-
             }
         }
         private Model _selectedModel;
@@ -232,14 +286,18 @@ namespace Network.ViewModel
             set
             {
                 _selectedModel = value;
-                //LabelValue.Count = 67;
-                //LabelValue.Price = _selectedModel.price;
+               // LabelValue = new Goods();
+
+               
+
                 if (_selectedCity != null)
                 {
-                    //if (_selectedModel == null) IsSecond3ListVisible = false;
-                    //else 
-                    LabelValue.Count = 67;
-                    LabelValue.Price = _selectedModel.price;
+                    if (_selectedModel != null)
+                    {
+                        LabelValue2 = "678";
+                        LabelValue.Count = _selectedModel.count;
+                        LabelValue.Price = _selectedModel.price;
+                    }
                     IsSecond3ListVisible = true;
                 }
                 else
@@ -247,63 +305,30 @@ namespace Network.ViewModel
                     IsSecond2ListVisible = false;
                     IsSecond3ListVisible = false;
                 }
-                if (_selectedModel == null) IsSecond3ListVisible = false;
-                else IsSecond3ListVisible = true;
-                //_selectedModel = value;
-                //IsSecond3ListVisible = true;
+                if (_selectedModel == null) 
+                    IsSecond3ListVisible = false;
+                else
+                    IsSecond3ListVisible = true;
                 OnPropertyChanged(nameof(SelectedModel));
+                OnPropertyChanged(nameof(LabelValue));
             }
         }
         // Метод загрузки городов для выбранной страны
         private async void LoadCitiesForCountry(int countryId)
-            {
-            //Subbrand = new ObservableCollection<Subbrand>
-            //{
-            //List<Manufacturer> Manufacturer1 = new List<Manufacturer>();
-            //    new Subbrand("Samsung"),
-            //    new Subbrand("LG"),
-            //   new Subbrand("Apple"),
-            //    new Subbrand("Apple")
-            //};
+        {
             Subbrand.Clear();
             Model.Clear();
-            String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzEwMTY1NTA1LCJleHAiOjE3MTAyNTE5MDV9.boHtTEEUYzk7fZI4o6l5x37bIVFW3hfPYdjPGzbKZ3g";
+            String token = Preferences.Get("token", "");
+            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzEwMTY1NTA1LCJleHAiOjE3MTAyNTE5MDV9.boHtTEEUYzk7fZI4o6l5x37bIVFW3hfPYdjPGzbKZ3g";
             await SendReguest2(token, countryId.ToString());
-            //Subbrand.Add(new Subbrand(countryId.ToString()));
-            //Subbrand.Add(new Subbrand("LG"));
-            //Subbrand.Add(new Subbrand("Apple"));
-            //Products = new ObservableCollection<Product>();
-            //Products.Add(new Product() { Name = "ProductA" });
-            //Products.Add(new Product() { Name = "ProductB" });
-            //Cities();
-            // Реализация загрузки городов для выбранной страны
-            // Например, вызов сервиса или обращение к базе данных
-            // Затем обновите свойство Cities с полученными данными
+
         }
         private async void LoadForCountry(int countryId)
         {
-            //Subbrand = new ObservableCollection<Subbrand>
-            //{
-            //List<Manufacturer> Manufacturer1 = new List<Manufacturer>();
-            //    new Subbrand("Samsung"),
-            //    new Subbrand("LG"),
-            //   new Subbrand("Apple"),
-            //    new Subbrand("Apple")
-            //};
             Model.Clear();
-            String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzEwMTY1NTA1LCJleHAiOjE3MTAyNTE5MDV9.boHtTEEUYzk7fZI4o6l5x37bIVFW3hfPYdjPGzbKZ3g";
+            String token = Preferences.Get("token", "");
+            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzEwMTY1NTA1LCJleHAiOjE3MTAyNTE5MDV9.boHtTEEUYzk7fZI4o6l5x37bIVFW3hfPYdjPGzbKZ3g";
             await SendReguest3(token, countryId.ToString());
-            //Model.Add(new Model(countryId.ToString()));
-            //Model.Add(new Model("Samsung"));
-            //Model.Add(new Model("LG"));
-            //Model.Add(new Model("Apple"));
-            //Products = new ObservableCollection<Product>();
-            //Products.Add(new Product() { Name = "ProductA" });
-            //Products.Add(new Product() { Name = "ProductB" });
-            //Cities();
-            // Реализация загрузки городов для выбранной страны
-            // Например, вызов сервиса или обращение к базе данных
-            // Затем обновите свойство Cities с полученными данными
         }
         private bool _isSecondListVisible;
         public bool IsSecondListVisible

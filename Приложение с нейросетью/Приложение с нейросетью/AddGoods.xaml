@@ -6,20 +6,20 @@
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Класс" IsVisible="true"/>
-            <Label Text="{Binding LabelValue.Class}" IsVisible="true"/>
+            <Label Text="{Binding LabelValue.Class,Mode=TwoWay}" IsVisible="true"/>
             <Label Text="Производитель"/>
             <Picker Title="Выберите производителя" ItemsSource="{Binding Manufacturer}" ItemDisplayBinding="{Binding name}" SelectedItem="{Binding SelectedCountry,Mode=TwoWay}" />
             <Label Text="Продуктовая линейка" IsVisible="{Binding IsSecondListVisible}"/>
-            <Picker x:Name="pr" Title="Выберите продуктовую линейку" ItemsSource="{Binding Subbrand}" ItemDisplayBinding="{Binding name}" IsVisible="{Binding IsSecondListVisible}" SelectedItem="{Binding SelectedCity}" />
+            <Picker x:Name="pr" Title="Выберите продуктовую линейку" ItemsSource="{Binding Subbrand}" ItemDisplayBinding="{Binding name}" IsVisible="{Binding IsSecondListVisible}" SelectedItem="{Binding SelectedCity,Mode=TwoWay}" />
             <Label Text="Модель" IsVisible="{Binding IsSecond2ListVisible}"/>
-            <Picker Title="Выберите модель" ItemsSource="{Binding Model}" ItemDisplayBinding="{Binding name}" SelectedItem="{Binding SelectedModel}" IsVisible="{Binding IsSecond2ListVisible}"/>
+            <Picker Title="Выберите модель" ItemsSource="{Binding Model}" ItemDisplayBinding="{Binding name}" SelectedItem="{Binding SelectedModel,Mode=TwoWay}" IsVisible="{Binding IsSecond2ListVisible}"/>
             <Label Text="Цена" IsVisible="{Binding IsSecond3ListVisible}"/>
-            <Label Text="{Binding LabelValue.Price}" IsVisible="{Binding IsSecond3ListVisible}"/>
+            <Label Text="{Binding LabelValue.Price,StringFormat='{0} рублей'}" IsVisible="{Binding IsSecond3ListVisible}"/>
             <Label Text="Количество" IsVisible="{Binding IsSecond3ListVisible}"/>
-            <Label Text="{Binding LabelValue.Count}" IsVisible="{Binding IsSecond3ListVisible}"/>
+            <Label Text="{Binding LabelValue.Count,StringFormat='{0} штук'}" IsVisible="{Binding IsSecond3ListVisible}"/>
             <Label Text="Добавить количество" IsVisible="{Binding IsSecond3ListVisible}"/>
-            <Entry x:Name="newItemEntry" Placeholder="Введите количество" IsVisible="{Binding IsSecond3ListVisible}"/>
-            <Button Text="Отправить на сервер" VerticalOptions="End" HorizontalOptions="Fill" IsVisible="{Binding IsSecond3ListVisible}" />
+            <Entry x:Name="newItemEntry" Text="{Binding InputText}"  Placeholder="Введите количество" IsVisible="{Binding IsSecond3ListVisible}"/>
+            <Button Text="Отправить на сервер" Command="{Binding SubmitCommand}"  VerticalOptions="End" HorizontalOptions="Fill" IsVisible="{Binding IsSecond3ListVisible}" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
