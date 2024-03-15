@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              Title="Товар"
-             x:Class="Network.AddGoods">
+             x:Class="Network.AddGoods"
+             xmlns:local="clr-namespace:Network;assembly=Network">
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Класс" IsVisible="true"/>
@@ -18,7 +19,11 @@
             <Label Text="Количество" IsVisible="{Binding IsSecond3ListVisible}"/>
             <Label Text="{Binding LabelValue.Count,StringFormat='{0} штук'}" IsVisible="{Binding IsSecond3ListVisible}"/>
             <Label Text="Добавить количество" IsVisible="{Binding IsSecond3ListVisible}"/>
-            <Entry x:Name="newItemEntry" Text="{Binding InputText}"  Placeholder="Введите количество" IsVisible="{Binding IsSecond3ListVisible}"/>
+            <Entry x:Name="newItemEntry" Text="{Binding InputText}"  Keyboard="Numeric" Placeholder="Введите количество" IsVisible="{Binding IsSecond3ListVisible}">
+                <Entry.Behaviors>
+               <local:NumericValidationBehavior />
+             </Entry.Behaviors>
+             </Entry>
             <Button Text="Отправить на сервер" Command="{Binding SubmitCommand}"  VerticalOptions="End" HorizontalOptions="Fill" IsVisible="{Binding IsSecond3ListVisible}" />
         </StackLayout>
     </ContentPage.Content>

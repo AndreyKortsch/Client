@@ -78,14 +78,14 @@ namespace Network
                 { "image", password }
             };
             var content = new FormUrlEncodedContent(values);
-            HttpResponseMessage response = await client.PostAsync("https://every-teams-wink.loca.lt/api/auth/image", content);
+            HttpResponseMessage response = await client.PostAsync("https://true-rules-like.loca.lt/api/auth/image", content);
             string responseContent = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
                 var Items = JsonConvert.DeserializeObject<Network.Models.ImageData>(responseContent);
                 Console.WriteLine("");
                 await DisplayAlert("Изображение", Items.Image.Class, "Принять");
-                var nextPage = new CameraViewPage();
+                var nextPage = new AddGoods();
                 
                 // Используйте Navigation.PushAsync() для перехода на новую страницу
                 await Navigation.PushAsync(nextPage);

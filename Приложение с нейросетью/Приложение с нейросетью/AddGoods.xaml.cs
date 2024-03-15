@@ -19,7 +19,7 @@ namespace Network
       public AddGoods()
        {
            InitializeComponent();
-           this.BindingContext = new GoodsViewModel(this);
+           this.BindingContext = new GoodsViewModel(this,Navigation);
 
 
         }

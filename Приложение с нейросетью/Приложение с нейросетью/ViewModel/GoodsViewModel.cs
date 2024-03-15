@@ -157,23 +157,28 @@ namespace Network.ViewModel
                 {
                     var Items = JsonConvert.DeserializeObject<ListModel>(responseContent);
                     //InputText = Items.models.ElementAt(0).count.ToString();
+                    await page.DisplayAlert("Сообщение", "Количество товара успешно изменено\n" +
+                        "Новое значение:" +
+                        Items.models.ElementAt(0).count.ToString(), "Принять");
+
                     //foreach (Model model in Items.models.ElementAt(0))
                     //{
-                     //   InputText = model.count;
+                    //   InputText = model.count;
                     //    Model.Add(new Model(model.id, model.name, model.count, model.price));
-                   // }
+                    // }
                     //InputText = Items.models[0].count.ToString();
 
 
                 }
                 else
                 {
-                    
+                    await page.DisplayAlert("Сообщение", "Неверные данные запроса", "Принять");
                 }
             }
             catch (Exception ex)
             {
-                InputText = ex.Message;
+                await page.DisplayAlert("Сообщение", ex.Message, "Принять");
+                //InputText = ex.Message;
             }
             finally
             {
@@ -193,19 +198,19 @@ namespace Network.ViewModel
                 }
             }
         }
-        private string _labelValue2;
-        public string LabelValue2
-        {
-            get { return _labelValue2; }
-            set
-            {
-                if (_labelValue2 != value)
-                {
-                    _labelValue2 = value;
-                    OnPropertyChanged(nameof(LabelValue2));
-                }
-            }
-        }
+        //private string _labelValue2;
+        //public string LabelValue2
+        //{
+        //    get { return _labelValue2; }
+        //    set
+        //    {
+        //        if (_labelValue2 != value)
+        //        {
+        //            _labelValue2 = value;
+        //            OnPropertyChanged(nameof(LabelValue2));
+        //        }
+         //   }
+        //}
         private string _inputText;
         public string InputText
         {
@@ -218,16 +223,20 @@ namespace Network.ViewModel
         }
         Page page;
         public Command SubmitCommand { get; set; }
-        public GoodsViewModel(Page page)
+        public INavigation Navigation { get; set; }
+
+        public GoodsViewModel(Page page, INavigation navigation)
         {
             this.page = page;
+            this.Navigation = navigation;
+
             //Manufacturer = new ObservableCollection<Manufacturer>();
             String token = Preferences.Get("token", "");
             String classname = Preferences.Get("classname", "");
             classname = "ABIS_BOOK";
             _labelValue = new Goods();
             LabelValue.Class = classname;
-            LabelValue.Count= 12;
+            //LabelValue.Count= 12;
             token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzEwMTY1NTA1LCJleHAiOjE3MTAyNTE5MDV9.boHtTEEUYzk7fZI4o6l5x37bIVFW3hfPYdjPGzbKZ3g";
             LoadDataCommand = new Command(async () => await SendReguest(token, classname));
             SubmitCommand = new Command(OnSubmit);
@@ -241,8 +250,14 @@ namespace Network.ViewModel
             String token = Preferences.Get("token", "");
             token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzEwMTY1NTA1LCJleHAiOjE3MTAyNTE5MDV9.boHtTEEUYzk7fZI4o6l5x37bIVFW3hfPYdjPGzbKZ3g";
             await SendReguest4(token, SelectedModel.id.ToString(), InputText);
-            await page.DisplayAlert("Сообщение", "Количество товара успешно изменено", "Принять");
-            // Обработка введенного текста
+
+            //await page.DisplayAlert("Сообщение", "Количество товара успешно изменено", "Принять");
+            // Обработка введенного var nextPage = new CameraViewPage();
+            var nextPage = new CameraViewPage();
+            // Используйте Navigation.PushAsync() для перехода на новую страницу
+            await Navigation.PushAsync(nextPage);
+            Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+
         }
         private Manufacturer _selectedCountry;
         public Manufacturer SelectedCountry
@@ -294,7 +309,7 @@ namespace Network.ViewModel
                 {
                     if (_selectedModel != null)
                     {
-                        LabelValue2 = "678";
+                        //LabelValue2 = "678";
                         LabelValue.Count = _selectedModel.count;
                         LabelValue.Price = _selectedModel.price;
                     }
