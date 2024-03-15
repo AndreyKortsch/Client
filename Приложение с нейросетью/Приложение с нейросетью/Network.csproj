@@ -20,6 +20,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="SciSharp.TensorFlow.Redist" Version="2.16.0" />
     <PackageReference Include="SixLabors.ImageSharp" Version="2.0.0" />
@@ -41,11 +44,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="appsettings.json" />
     <None Remove="C:\Users\User\.nuget\packages\\tensorflowsharp\1.15.1\runtimes\win7-x64\native\libtensorflow.dll" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="C:\Users\User\.nuget\packages\\tensorflowsharp\1.15.1\runtimes\win7-x64\native\libtensorflow.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="appsettings.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(NugetPackageRoot)\tensorflowsharp\1.15.1\runtimes\win7-x64\native\libtensorflow.dll">

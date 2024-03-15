@@ -5,12 +5,16 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Network.ViewModel
 {
@@ -229,13 +233,21 @@ namespace Network.ViewModel
         {
             this.page = page;
             this.Navigation = navigation;
+            
+            Stream resourceStream = GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Network.appsettings.json");
+            var configuration = new ConfigurationBuilder()
+                .AddJsonStream(resourceStream)
+                .Build();
+            //LabelValue.Class= configuration["ChatHubUrl"];
 
             //Manufacturer = new ObservableCollection<Manufacturer>();
             String token = Preferences.Get("token", "");
             String classname = Preferences.Get("classname", "");
             classname = "ABIS_BOOK";
             _labelValue = new Goods();
-            LabelValue.Class = classname;
+            LabelValue.Class = configuration["ChatHubUrl"];
+
+            // LabelValue.Class = classname;
             //LabelValue.Count= 12;
             token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzEwMTY1NTA1LCJleHAiOjE3MTAyNTE5MDV9.boHtTEEUYzk7fZI4o6l5x37bIVFW3hfPYdjPGzbKZ3g";
             LoadDataCommand = new Command(async () => await SendReguest(token, classname));
