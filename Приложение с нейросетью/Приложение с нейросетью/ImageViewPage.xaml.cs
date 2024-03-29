@@ -1,31 +1,14 @@
-﻿using LearningXamarin.Views;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using System.Drawing;
 using Xamarin.Forms.Xaml;
 using System.Net.Http;
 using Newtonsoft.Json;
-using Microsoft.Win32;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Processing;
-using System.Drawing.Imaging;
-using SixLabors.ImageSharp.Formats.Png;
-using System.Runtime.InteropServices.ComTypes;
-using Xamarin.Forms.PlatformConfiguration;
-using Xamarin.Forms.Shapes;
-using SixLabors.ImageSharp.Formats.Jpeg;
 using SkiaSharp;
-using Network;
-using System.Reflection;
-using static Xamarin.Essentials.Permissions;
-using Network.Models;
-using System.Collections;
+
 
 
 namespace Network
@@ -119,21 +102,7 @@ namespace Network
         }
 
        
-        public async void LoadTensorFlowModel()
-        {
-            
-            string modelPath = "/storage/emulated/0/Pictures/saved_model.pb";
-
-            if (File.Exists(modelPath))
-            {
-                await DisplayAlert("Success", System.Text.Encoding.Default.GetString(Getimagebytes()), "OK");
-            }
-            else
-            {
-                await DisplayAlert("Error", "No", "OK");
-            }
-           //var graph = new ScopedTFGraph();
-        }
+        
         
     }
 }

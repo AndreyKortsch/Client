@@ -1,18 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.CommunityToolkit.UI.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.IO;
 using Xamarin.Essentials;
 using Plugin.Media;
-//*using ImageResizer;
-//using FreeImageResizer;
-using Xamarin.Forms.PlatformConfiguration.TizenSpecific;
-using System.Drawing;
 using Plugin.Media.Abstractions;
 using Network;
 
@@ -35,7 +27,7 @@ namespace LearningXamarin.Views
             //xctCameraView.Shutter();
             await CrossMedia.Current.Initialize();
 
-            var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
+            var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
             {
                 PhotoSize = PhotoSize.MaxWidthHeight,
                 MaxWidthHeight = 100,

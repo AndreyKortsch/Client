@@ -42,7 +42,7 @@ namespace Network.ViewModel
                 { "classname", classname }
             };
                 var content = new FormUrlEncodedContent(values);
-                HttpResponseMessage response = await client.PostAsync("https://true-rules-like.loca.lt/api/test/class", content);
+                HttpResponseMessage response = await client.PostAsync(server+"/api/test/class", content);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -79,7 +79,7 @@ namespace Network.ViewModel
                 { "manufactorid", manufactorid }
             };
                 var content = new FormUrlEncodedContent(values);
-                HttpResponseMessage response = await client.PostAsync("https://true-rules-like.loca.lt/api/test/manufactor", content);
+                HttpResponseMessage response = await client.PostAsync(server+"/api/test/manufactor", content);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -116,7 +116,7 @@ namespace Network.ViewModel
                 { "subbrandid", subbrandid }
             };
                 var content = new FormUrlEncodedContent(values);
-                HttpResponseMessage response = await client.PostAsync("https://true-rules-like.loca.lt/api/test/subbrand", content);
+                HttpResponseMessage response = await client.PostAsync(server + "/api/test/subbrand", content);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -155,7 +155,7 @@ namespace Network.ViewModel
 
             };
                 var content = new FormUrlEncodedContent(values);
-                HttpResponseMessage response = await client.PostAsync("https://true-rules-like.loca.lt/api/test/updatemodel", content);
+                HttpResponseMessage response = await client.PostAsync(server + "/api/test/updatemodel", content);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -164,15 +164,6 @@ namespace Network.ViewModel
                     await page.DisplayAlert("Сообщение", "Количество товара успешно изменено\n" +
                         "Новое значение:" +
                         Items.models.ElementAt(0).count.ToString(), "Принять");
-
-                    //foreach (Model model in Items.models.ElementAt(0))
-                    //{
-                    //   InputText = model.count;
-                    //    Model.Add(new Model(model.id, model.name, model.count, model.price));
-                    // }
-                    //InputText = Items.models[0].count.ToString();
-
-
                 }
                 else
                 {
@@ -202,19 +193,6 @@ namespace Network.ViewModel
                 }
             }
         }
-        //private string _labelValue2;
-        //public string LabelValue2
-        //{
-        //    get { return _labelValue2; }
-        //    set
-        //    {
-        //        if (_labelValue2 != value)
-        //        {
-        //            _labelValue2 = value;
-        //            OnPropertyChanged(nameof(LabelValue2));
-        //        }
-         //   }
-        //}
         private string _inputText;
         public string InputText
         {
@@ -228,7 +206,7 @@ namespace Network.ViewModel
         Page page;
         public Command SubmitCommand { get; set; }
         public INavigation Navigation { get; set; }
-
+        String server;
         public GoodsViewModel(Page page, INavigation navigation)
         {
             this.page = page;
@@ -243,13 +221,12 @@ namespace Network.ViewModel
             //Manufacturer = new ObservableCollection<Manufacturer>();
             String token = Preferences.Get("token", "");
             String classname = Preferences.Get("classname", "");
-            classname = "ABIS_BOOK";
+            //classname = "ABIS_BOOK";
             _labelValue = new Goods();
-            LabelValue.Class = configuration["ChatHubUrl"];
-
-            // LabelValue.Class = classname;
+            server = configuration["Url"];
+            LabelValue.Class = classname;
             //LabelValue.Count= 12;
-            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzEwMTY1NTA1LCJleHAiOjE3MTAyNTE5MDV9.boHtTEEUYzk7fZI4o6l5x37bIVFW3hfPYdjPGzbKZ3g";
+            //token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzEwMTY1NTA1LCJleHAiOjE3MTAyNTE5MDV9.boHtTEEUYzk7fZI4o6l5x37bIVFW3hfPYdjPGzbKZ3g";
             LoadDataCommand = new Command(async () => await SendReguest(token, classname));
             SubmitCommand = new Command(OnSubmit);
             //DisplayAlert("Ошибка авторизации", "Неверный логин или пароль", "Принять");
@@ -260,7 +237,7 @@ namespace Network.ViewModel
         private async void OnSubmit()
         {
             String token = Preferences.Get("token", "");
-            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzEwMTY1NTA1LCJleHAiOjE3MTAyNTE5MDV9.boHtTEEUYzk7fZI4o6l5x37bIVFW3hfPYdjPGzbKZ3g";
+            //token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzEwMTY1NTA1LCJleHAiOjE3MTAyNTE5MDV9.boHtTEEUYzk7fZI4o6l5x37bIVFW3hfPYdjPGzbKZ3g";
             await SendReguest4(token, SelectedModel.id.ToString(), InputText);
 
             //await page.DisplayAlert("Сообщение", "Количество товара успешно изменено", "Принять");
@@ -346,7 +323,7 @@ namespace Network.ViewModel
             Subbrand.Clear();
             Model.Clear();
             String token = Preferences.Get("token", "");
-            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzEwMTY1NTA1LCJleHAiOjE3MTAyNTE5MDV9.boHtTEEUYzk7fZI4o6l5x37bIVFW3hfPYdjPGzbKZ3g";
+            //token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzEwMTY1NTA1LCJleHAiOjE3MTAyNTE5MDV9.boHtTEEUYzk7fZI4o6l5x37bIVFW3hfPYdjPGzbKZ3g";
             await SendReguest2(token, countryId.ToString());
 
         }
@@ -354,7 +331,7 @@ namespace Network.ViewModel
         {
             Model.Clear();
             String token = Preferences.Get("token", "");
-            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzEwMTY1NTA1LCJleHAiOjE3MTAyNTE5MDV9.boHtTEEUYzk7fZI4o6l5x37bIVFW3hfPYdjPGzbKZ3g";
+            //token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzEwMTY1NTA1LCJleHAiOjE3MTAyNTE5MDV9.boHtTEEUYzk7fZI4o6l5x37bIVFW3hfPYdjPGzbKZ3g";
             await SendReguest3(token, countryId.ToString());
         }
         private bool _isSecondListVisible;

@@ -13,6 +13,9 @@ using Newtonsoft.Json;
 using Xamarin.CommunityToolkit.Behaviors;
 using Xamarin.Essentials;
 using Network.Models;
+using Microsoft.Extensions.Configuration;
+using System.IO;
+using System.Reflection;
 
 namespace Приложение_с_нейросетью
 {
@@ -65,7 +68,11 @@ namespace Приложение_с_нейросетью
                 { "password", password }
             };
                 var content = new FormUrlEncodedContent(values);
-                HttpResponseMessage response = await client.PostAsync("https://true-rules-like.loca.lt/api/auth/signin", content);
+                Stream resourceStream = GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Network.appsettings.json");
+                var configuration = new ConfigurationBuilder()
+                    .AddJsonStream(resourceStream)
+                    .Build();
+                HttpResponseMessage response = await client.PostAsync(configuration["Url"]+ "/api/auth/signin", content);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
