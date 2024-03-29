@@ -64,24 +64,22 @@ namespace Приложение_с_нейросетью
             {
                 var values = new Dictionary<string, string>
              {
-                { "username", username },
-                { "password", password }
-            };
+                {"username",username},
+                {"password",password}
+             };
                 var content = new FormUrlEncodedContent(values);
                 Stream resourceStream = GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Network.appsettings.json");
                 var configuration = new ConfigurationBuilder()
                     .AddJsonStream(resourceStream)
                     .Build();
-                HttpResponseMessage response = await client.PostAsync(configuration["Url"]+ "/api/auth/signin", content);
-                string responseContent = await response.Content.ReadAsStringAsync();
+                string server = configuration["Url"];
+                HttpResponseMessage response = await client.PostAsync(server+"/api/auth/signin", content);
                 if (response.IsSuccessStatusCode)
                 {
-                    // Получаем ответ от сервера
-                    //string responseContent = await response.Content.ReadAsStringAsync();
+                    //Получаем ответ от сервера
+                    string responseContent = await response.Content.ReadAsStringAsync();
                     var Items = JsonConvert.DeserializeObject<User>(responseContent);
-                    Console.WriteLine("");
                     await DisplayAlert("Авторизация", "Авторизация прошла успешно", "Принять");
-                    //await DisplayAlert("Авторизация", "Авторизация прошла успешно", "Принять");
                     var nextPage = new CameraViewPage();
                     Preferences.Clear();
                     Preferences.Set("token", Items.accessToken);

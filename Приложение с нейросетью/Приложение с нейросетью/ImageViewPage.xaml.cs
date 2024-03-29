@@ -8,7 +8,8 @@ using Xamarin.Forms.Xaml;
 using System.Net.Http;
 using Newtonsoft.Json;
 using SkiaSharp;
-
+using Microsoft.Extensions.Configuration;
+using System.Reflection;
 
 
 namespace Network
@@ -61,7 +62,12 @@ namespace Network
                 { "image", password }
             };
             var content = new FormUrlEncodedContent(values);
-            HttpResponseMessage response = await client.PostAsync("https://true-rules-like.loca.lt/api/auth/image", content);
+            Stream resourceStream = GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Network.appsettings.json");
+            var configuration = new ConfigurationBuilder()
+                .AddJsonStream(resourceStream)
+                .Build();
+            string server = configuration["Url"];
+            HttpResponseMessage response = await client.PostAsync(server+"/api/auth/image", content);
             string responseContent = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {

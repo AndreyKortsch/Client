@@ -11,14 +11,14 @@ namespace Приложение_с_нейросетью
         {
             InitializeComponent();
 
-            //MainPage = new MainPage();
-            MainPage = new AddGoods();
+            MainPage = new MainPage();
+            //MainPage = new AddGoods();
         }
 
         protected override void OnStart()
         {
-            //MainPage = new NavigationPage(new MainPage());
-            MainPage = new NavigationPage(new AddGoods());
+            MainPage = new NavigationPage(new MainPage());
+            //MainPage = new NavigationPage(new AddGoods());
 
         }
 
