@@ -69,17 +69,20 @@ namespace Network
             string server = configuration["Url"];
             HttpResponseMessage response = await client.PostAsync(server+"/api/auth/image", content);
             string responseContent = await response.Content.ReadAsStringAsync();
+            //Preferences.Set("classb", "вва");
+
             if (response.IsSuccessStatusCode)
             {
-                var Items = JsonConvert.DeserializeObject<Network.Models.ImageData>(responseContent);
-                Console.WriteLine("");
+                var Items = JsonConvert.DeserializeObject<Models.ImageData>(responseContent);
+                Preferences.Set("classb", Items.Image.Class);
+
                 await DisplayAlert("Изображение", Items.Image.Class, "Принять");
                 var nextPage = new AddGoods();
-                
+               // Preferences.Set("classb", "вва");
                 // Используйте Navigation.PushAsync() для перехода на новую страницу
                 await Navigation.PushAsync(nextPage);
                 Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count-2]);
-                Preferences.Set("classname", Items.Image.Class);
+                //Preferences.Set("classname", Items.Image.Class);
                 //await DisplayAlert("Авторизация", Items.accessToken, "Принять");
                 //await DisplayAlert("Авторизация", "Авторизация прошла успешно", "Принять");
                 // var nextPage = new CameraViewPage();
@@ -102,13 +105,14 @@ namespace Network
             string image = Convert.ToBase64String(Getimagebytes());
             String token = Preferences.Get("token", "");
             await SendReguest(token, image);
+           // Preferences.Set("classname", Items.Image.Class);
             //await DisplayAlert("Success", LoadModel(), "OK");
 
 
         }
 
-       
-        
-        
+
+
+
     }
 }

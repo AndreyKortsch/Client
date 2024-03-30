@@ -220,7 +220,7 @@ namespace Network.ViewModel
 
             //Manufacturer = new ObservableCollection<Manufacturer>();
             String token = Preferences.Get("token", "");
-            String classname = Preferences.Get("classname", "");
+            String classname = Preferences.Get("classb", "");
             //classname = "ABIS_BOOK";
             _labelValue = new Goods();
             server = configuration["Url"];
