@@ -24,7 +24,7 @@
                <local:NumericValidationBehavior />
              </Entry.Behaviors>
              </Entry>
-            <Button Text="Отправить на сервер" Command="{Binding SubmitCommand}"  VerticalOptions="End" HorizontalOptions="Fill" IsVisible="{Binding IsSecond3ListVisible}" />
+            <Button Text="Отправить на сервер" Command="{Binding SubmitCommand}"  VerticalOptions="End" HorizontalOptions="Fill" IsVisible="{Binding IsSecond3ListVisible}" Style="{StaticResource MyButtonStyle}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

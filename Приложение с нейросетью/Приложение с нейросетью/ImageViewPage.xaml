@@ -10,6 +10,6 @@
                 VerticalOptions="FillAndExpand"
                 x:Name="image" 
                 Aspect="AspectFit" />
-         <Button Text="Отправить на сервер" VerticalOptions="End" HorizontalOptions="Center" Clicked="Button_Clicked" />
+        <Button Text="Отправить на сервер" VerticalOptions="End" HorizontalOptions="Center" Clicked="Button_Clicked" Style="{StaticResource MyButtonStyle}"/>
        </Grid>
 </ContentPage>

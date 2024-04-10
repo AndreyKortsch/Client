@@ -33,16 +33,17 @@ namespace Приложение_с_нейросетью
             Title = "Авторизация";
             usernameEntry = new Entry
             {
-                Placeholder = "Username"
+                Placeholder = "Имя пользователя"
             };
             passwordEntry = new Entry
             {
-                Placeholder = "Password",
+                Placeholder = "Пароль",
                 IsPassword = true
             };
             loginButton = new Button
             {
-                Text = "Login"
+                Text = "Войти",
+                Style = (Style)Application.Current.Resources["MyButtonStyle"]
             };
             loginButton.Clicked += OnLoginButtonClicked;
 
