@@ -15,6 +15,7 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Windows.Input;
 
 namespace Network.ViewModel
 {
@@ -204,14 +205,39 @@ namespace Network.ViewModel
             }
         }
         Page page;
-        public Command SubmitCommand { get; set; }
+        //public Command SubmitCommand { get; set; }
+        private bool _isButtonEnabled = true;
+
+        public bool IsButtonEnabled
+        {
+            get { return _isButtonEnabled; }
+            set
+            {
+                _isButtonEnabled = value;
+                OnPropertyChanged(nameof(IsButtonEnabled));
+            }
+        }
+
+        private ICommand _submitCommand;
+        public ICommand SubmitCommand
+        {
+            get
+            {
+                if (_submitCommand == null)
+                {
+                    _submitCommand = new Command(OnSubmit);
+                }
+                return _submitCommand;
+            }
+        }
+
         public INavigation Navigation { get; set; }
+        public Button Button { get; set; }
         String server;
         public GoodsViewModel(Page page, INavigation navigation)
         {
             this.page = page;
             this.Navigation = navigation;
-            
             Stream resourceStream = GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Network.appsettings.json");
             var configuration = new ConfigurationBuilder()
                 .AddJsonStream(resourceStream)
@@ -228,7 +254,7 @@ namespace Network.ViewModel
             //LabelValue.Count= 12;
             //token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzEwMTY1NTA1LCJleHAiOjE3MTAyNTE5MDV9.boHtTEEUYzk7fZI4o6l5x37bIVFW3hfPYdjPGzbKZ3g";
             LoadDataCommand = new Command(async () => await SendReguest(token, classname));
-            SubmitCommand = new Command(OnSubmit);
+            //SubmitCommand = new Command(OnSubmit);
             //DisplayAlert("Ошибка авторизации", "Неверный логин или пароль", "Принять");
             //await SendReguest(token, classname);
             //Subbrand = new ObservableCollection<Subbrand>();
@@ -237,10 +263,14 @@ namespace Network.ViewModel
         private async void OnSubmit()
         {
             String token = Preferences.Get("token", "");
+            IsButtonEnabled = false;
+            //Button a = (Button)this.;
+            //button.IsEnabled = false;
             //token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzEwMTY1NTA1LCJleHAiOjE3MTAyNTE5MDV9.boHtTEEUYzk7fZI4o6l5x37bIVFW3hfPYdjPGzbKZ3g";
             await SendReguest4(token, SelectedModel.id.ToString(), InputText);
-
-            //await page.DisplayAlert("Сообщение", "Количество товара успешно изменено", "Принять");
+            //button.IsEnabled = true;
+            IsButtonEnabled = false;
+             //await page.DisplayAlert("Сообщение", "Количество товара успешно изменено", "Принять");
             // Обработка введенного var nextPage = new CameraViewPage();
             var nextPage = new CameraViewPage();
             // Используйте Navigation.PushAsync() для перехода на новую страницу
