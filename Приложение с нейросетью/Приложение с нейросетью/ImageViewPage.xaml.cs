@@ -103,9 +103,12 @@ namespace Network
            //await DisplayAlert("Success", LoadModel(), "OK");
             //LoadTensorFlowModel();
             string image = Convert.ToBase64String(Getimagebytes());
+            Button loginButton=(Button)sender;
+            loginButton.IsEnabled = false;
             String token = Preferences.Get("token", "");
             await SendReguest(token, image);
-           // Preferences.Set("classname", Items.Image.Class);
+            loginButton.IsEnabled = true;
+            // Preferences.Set("classname", Items.Image.Class);
             //await DisplayAlert("Success", LoadModel(), "OK");
 
 
